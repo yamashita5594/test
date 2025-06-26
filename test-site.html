@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ギフト診断メーカー</title>
+  <style>
+    body {
+      font-family: "Helvetica Neue", sans-serif;
+      padding: 20px;
+      background: linear-gradient(to bottom right, #ffe4e1, #fff0f5);
+      color: #7b2f40;
+    }
+    h1 {
+      text-align: center;
+      color: #d36c6c;
+    }
+    .question, #result {
+      background: #fff;
+      border-radius: 20px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      padding: 20px;
+      margin: 20px auto;
+      max-width: 500px;
+      text-align: center;
+    }
+    button {
+      margin: 10px auto;
+      display: block;
+      padding: 12px 20px;
+      width: 100%;
+      max-width: 300px;
+      font-size: 16px;
+      background-color: #f9c5d1;
+      border: none;
+      border-radius: 10px;
+      color: #7b2f40;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+    button:hover {
+      background-color: #f7a6b6;
+    }
+    .hidden {
+      display: none;
+    }
+    #result {
+      font-weight: bold;
+      font-size: 1.2em;
+    }
+    #result img {
+      margin-top: 20px;
+      max-width: 300px;
+      display: block;
+      border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    }
+  </style>
+</head>
+<body>
+  <h1>あなたにぴったりのギフト診断</h1>
+
+  <div id="step1" class="question">
+    <p>ステップ1：「贈りたい相手はどんな人？」</p>
+    <button onclick="nextStep('友達')">友達</button>
+    <button onclick="nextStep('両親')">両親</button>
+    <button onclick="nextStep('先輩、後輩')">先輩、後輩</button>
+    <button onclick="nextStep('気になっている人')">気になっている人</button>
+  </div>
+
+  <div id="step2" class="question hidden">
+    <p>ステップ2：「相手の好きなものは？」</p>
+    <button onclick="showResult('果物')">果物</button>
+    <button onclick="showResult('アイス')">アイス</button>
+    <button onclick="showResult('ゼリー')">ゼリー</button>
+    <button onclick="showResult('分からない')">分からない</button>
+  </div>
+
+  <div id="result" class="hidden"></div>
+
+  <script>
+    let answer1 = '';
+
+    function nextStep(choice) {
+      answer1 = choice;
+      document.getElementById('step1').classList.add('hidden');
+      document.getElementById('step2').classList.remove('hidden');
+    }
+
+    function showResult(answer2) {
+      const key = `${answer1} + ${answer2}`;
+      const results = {
+        '友達 + 果物': { text: '桃やぶどうのフルーツ', img: 'https://kurashikimomoko.itembox.design/item/img/item/404momo.png' },
+        '友達 + アイス': { text: '果物入りアイスセット', img: 'https://kurashikimomoko.itembox.design/item/img/item/404momo.png' },
+        '友達 + ゼリー': { text: '季節のフルーツゼリー', img: 'https://kurashikimomoko.itembox.design/item/img/item/404momo.png' },
+        '友達 + 分からない': { text: '人気No.1ギフト詰め合わせ', img: 'https://kurashikimomoko.itembox.design/item/img/item/404momo.png' },
+
+        '両親 + 果物': { text: '高級フルーツ盛り合わせ', img: 'https://kurashikimomoko.itembox.design/item/img/item/404momo.png' },
+        '両親 + アイス': { text: 'フルーツとアイスのセット', img: 'https://kurashikimomoko.itembox.design/item/img/item/404momo.png' },
+        '両親 + ゼリー': { text: 'やさしい甘さの果実ゼリー', img: 'https://kurashikimomoko.itembox.design/item/img/item/404momo.png' },
+        '両親 + 分からない': { text: '季節限定ギフトセット', img: 'https://kurashikimomoko.itembox.design/item/img/item/404momo.png' },
+
+        '先輩、後輩 + 果物': { text: '彩りフルーツギフト', img: 'https://kurashikimomoko.itembox.design/item/img/item/404momo.png' },
+        '先輩、後輩 + アイス': { text: '見た目も楽しいフルーツアイス', img: 'https://kurashikimomoko.itembox.design/item/img/item/404momo.png' },
+        '先輩、後輩 + ゼリー': { text: 'おしゃれなゼリーギフト', img: 'https://kurashikimomoko.itembox.design/item/img/item/404momo.png' },
+        '先輩、後輩 + 分からない': { text: 'スイーツ詰め合わせ', img: 'https://kurashikimomoko.itembox.design/item/img/item/404momo.png' },
+
+        '気になっている人 + 果物': { text: '華やかフルーツギフト', img: 'https://kurashikimomoko.itembox.design/item/img/item/404momo.png' },
+        '気になっている人 + アイス': { text: 'ハート型フルーツアイス', img: 'https://kurashikimomoko.itembox.design/item/img/item/404momo.png' },
+        '気になっている人 + ゼリー': { text: 'かわいいパッケージのゼリーセット', img: 'https://kurashikimomoko.itembox.design/item/img/item/404momo.png' },
+        '気になっている人 + 分からない': { text: 'スイーツ詰め合わせ', img: 'https://kurashikimomoko.itembox.design/item/img/item/404momo.png' }
+      };
+
+      const result = results[key] || { text: 'おすすめギフトを準備中です', img: '' };
+      document.getElementById('step2').classList.add('hidden');
+      const resultDiv = document.getElementById('result');
+      resultDiv.innerHTML = `あなたにおすすめのギフトは「${result.text}」です！` +
+        (result.img ? `<img src="${result.img}" alt="${result.text}">` : '');
+      resultDiv.classList.remove('hidden');
+    }
+  </script>
+</body>
+</html>
+
