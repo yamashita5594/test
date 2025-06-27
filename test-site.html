@@ -5,31 +5,33 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>ギフト診断メーカー</title>
   <style>
+    * { box-sizing: border-box; }
     body {
       font-family: "Helvetica Neue", sans-serif;
-      padding: 20px;
+      margin: 0;
       background: linear-gradient(to bottom right, #ffe4e1, #fff0f5);
       color: #7b2f40;
+      background-image: url('https://kurashikimomoko.itembox.design/item/img/item/bg_peach_illust.png');
+      background-repeat: repeat;
+      background-size: 150px;
     }
-    h1 {
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 20px;
       text-align: center;
-      color: #d36c6c;
+      animation: fadeIn 0.8s ease-in;
     }
-    .question, #result {
+    .card {
       background: #fff;
       border-radius: 20px;
       box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
       padding: 20px;
-      margin: 20px auto;
-      max-width: 500px;
-      text-align: center;
+      margin-bottom: 30px;
     }
     button {
-      margin: 10px auto;
-      display: block;
+      margin: 10px;
       padding: 12px 20px;
-      width: 100%;
-      max-width: 300px;
       font-size: 16px;
       background-color: #f9c5d1;
       border: none;
@@ -41,84 +43,157 @@
     button:hover {
       background-color: #f7a6b6;
     }
-    .hidden {
-      display: none;
+    .hidden { display: none; }
+    .fade { animation: fadeIn 0.8s ease-in; }
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
     }
-    #result {
-      font-weight: bold;
-      font-size: 1.2em;
-    }
-    #result img {
-      margin-top: 20px;
-      max-width: 300px;
-      display: block;
+    img.responsive {
+      width: 100%;
       border-radius: 10px;
-      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      margin-bottom: 15px;
+    }
+    .share-buttons a {
+      display: inline-block;
+      margin: 10px;
+      text-decoration: none;
+      font-size: 14px;
+      color: white;
+      padding: 10px 15px;
+      border-radius: 5px;
+    }
+    .twitter { background-color: #1da1f2; }
+    .instagram {
+      background: radial-gradient(circle at 30% 107%, #fdf497 0%, #fd5949 45%, #d6249f 60%, #285aeb 90%);
+    }
+    .related-links-container {
+      margin-top: 50px;
+      text-align: center;
+    }
+    .related-links-container h3 {
+      margin-bottom: 10px;
+    }
+    .related-links {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+    .related-links a img {
+      width: 150px;
+      border-radius: 10px;
+    }
+    .back-btn {
+      display: inline-block;
+      margin: 15px 0;
+      background: #ddd;
+      color: #333;
     }
   </style>
 </head>
 <body>
-  <h1>あなたにぴったりのギフト診断</h1>
+  <div class="container">
+    <div class="card" id="intro">
+      <h1>今年は何を贈る？ギフト診断！</h1>
+      <img src="https://kurashikimomoko.itembox.design/item/img/item/404momo.png" alt="ギフト診断バナー" class="responsive">
+      <p>たった2つの質問で、あなたにぴったりのギフトが分かります。</p>
+      <a href="?start=1"><button>ログイン(新規登録)して診断する</button></a>
+      <button onclick="showStep('step1')">ログインしないで診断する</button>
+    </div>
 
-  <div id="step1" class="question">
-    <p>ステップ1：「贈りたい相手はどんな人？」</p>
-    <button onclick="nextStep('友達')">友達</button>
-    <button onclick="nextStep('両親')">両親</button>
-    <button onclick="nextStep('先輩、後輩')">先輩、後輩</button>
-    <button onclick="nextStep('気になっている人')">気になっている人</button>
+    <div class="card hidden" id="step1">
+      <p>ステップ1：「贈りたい相手はどんな人？」</p>
+      <button onclick="nextStep('友達')">友達</button>
+      <button onclick="nextStep('両親')">両親</button>
+      <button onclick="nextStep('先輩、後輩')">先輩・後輩</button>
+      <button onclick="nextStep('気になっている人')">恋人・パートナー</button>
+      <button class="back-btn" onclick="showStep('intro')">戻る</button>
+    </div>
+
+    <div class="card hidden" id="step2">
+      <p>ステップ2：「相手の好きなものは？」</p>
+      <button onclick="showResult('果物')">果物</button>
+      <button onclick="showResult('アイス')">アイス</button>
+      <button onclick="showResult('ゼリー')">ゼリー</button>
+      <button onclick="showResult('分からない')">プリン</button>
+      <button class="back-btn" onclick="showStep('step1')">戻る</button>
+    </div>
+
+    <div class="card hidden" id="result"></div>
+
+    <div class="related-links-container">
+      <h3>関連リンク</h3>
+      <div class="related-links">
+        <a href="https://store.kurashikimomoko.jp/c/brand/ryoukanoshizuku"><img src="https://kurashikimomoko.itembox.design/item/img/item/osusume_kuzu.png" alt="新商品"></a>
+        <a href="https://store.kurashikimomoko.jp/c/campaign/summer-gift"><img src="https://kurashikimomoko.itembox.design/item/img/index/chugen_jelly.png" alt="夏ギフト一覧"></a>
+        <a href="https://store.kurashikimomoko.jp/c/mini"><img src="https://kurashikimomoko.itembox.design/item/img/item/mini10.png" alt="ミニギフト一覧"></a>
+      </div>
+    </div>
   </div>
-
-  <div id="step2" class="question hidden">
-    <p>ステップ2：「相手の好きなものは？」</p>
-    <button onclick="showResult('果物')">果物</button>
-    <button onclick="showResult('アイス')">アイス</button>
-    <button onclick="showResult('ゼリー')">ゼリー</button>
-    <button onclick="showResult('分からない')">分からない</button>
-  </div>
-
-  <div id="result" class="hidden"></div>
 
   <script>
     let answer1 = '';
 
+    window.onload = function () {
+      const url = new URL(window.location.href);
+      if (url.searchParams.get("start") === "1") {
+        showStep("step1");
+      }
+    }
+
+    function showStep(id) {
+      document.querySelectorAll('.card').forEach(el => el.classList.add('hidden'));
+      const target = document.getElementById(id);
+      target.classList.remove('hidden');
+      target.classList.add('fade');
+    }
+
     function nextStep(choice) {
       answer1 = choice;
-      document.getElementById('step1').classList.add('hidden');
-      document.getElementById('step2').classList.remove('hidden');
+      showStep('step2');
     }
 
     function showResult(answer2) {
       const key = `${answer1} + ${answer2}`;
       const results = {
-        '友達 + 果物': { text: '桃やぶどうのフルーツ', img: 'https://kurashikimomoko.itembox.design/item/img/item/404momo.png' },
-        '友達 + アイス': { text: '果物入りアイスセット', img: 'https://kurashikimomoko.itembox.design/item/img/item/404momo.png' },
-        '友達 + ゼリー': { text: '季節のフルーツゼリー', img: 'https://kurashikimomoko.itembox.design/item/img/item/404momo.png' },
-        '友達 + 分からない': { text: '人気No.1ギフト詰め合わせ', img: 'https://kurashikimomoko.itembox.design/item/img/item/404momo.png' },
-
-        '両親 + 果物': { text: '高級フルーツ盛り合わせ', img: 'https://kurashikimomoko.itembox.design/item/img/item/404momo.png' },
-        '両親 + アイス': { text: 'フルーツとアイスのセット', img: 'https://kurashikimomoko.itembox.design/item/img/item/404momo.png' },
-        '両親 + ゼリー': { text: 'やさしい甘さの果実ゼリー', img: 'https://kurashikimomoko.itembox.design/item/img/item/404momo.png' },
-        '両親 + 分からない': { text: '季節限定ギフトセット', img: 'https://kurashikimomoko.itembox.design/item/img/item/404momo.png' },
-
-        '先輩、後輩 + 果物': { text: '彩りフルーツギフト', img: 'https://kurashikimomoko.itembox.design/item/img/item/404momo.png' },
-        '先輩、後輩 + アイス': { text: '見た目も楽しいフルーツアイス', img: 'https://kurashikimomoko.itembox.design/item/img/item/404momo.png' },
-        '先輩、後輩 + ゼリー': { text: 'おしゃれなゼリーギフト', img: 'https://kurashikimomoko.itembox.design/item/img/item/404momo.png' },
-        '先輩、後輩 + 分からない': { text: 'スイーツ詰め合わせ', img: 'https://kurashikimomoko.itembox.design/item/img/item/404momo.png' },
-
-        '気になっている人 + 果物': { text: '華やかフルーツギフト', img: 'https://kurashikimomoko.itembox.design/item/img/item/404momo.png' },
-        '気になっている人 + アイス': { text: 'ハート型フルーツアイス', img: 'https://kurashikimomoko.itembox.design/item/img/item/404momo.png' },
-        '気になっている人 + ゼリー': { text: 'かわいいパッケージのゼリーセット', img: 'https://kurashikimomoko.itembox.design/item/img/item/404momo.png' },
-        '気になっている人 + 分からない': { text: 'スイーツ詰め合わせ', img: 'https://kurashikimomoko.itembox.design/item/img/item/404momo.png' }
+        '友達 + 果物': {
+          text: '桃やぶどうのフルーツ',
+          img: 'https://kurashikimomoko.itembox.design/item/img/item/404momo.png',
+          link: 'https://store.kurashikimomoko.jp/',
+          desc: '新鮮な桃とぶどうを贅沢に使ったギフトセット。友達へのプレゼントに最適です。'
+        },
+        '気になっている人 + 分からない': {
+          text: 'スイーツ詰め合わせ',
+          img: 'https://kurashikimomoko.itembox.design/item/img/item/404momo.png',
+          link: 'https://store.kurashikimomoko.jp/',
+          desc: '何を贈ればいいか分からない時にぴったり。人気のスイーツを詰め合わせたセットです。'
+        }
       };
 
-      const result = results[key] || { text: 'おすすめギフトを準備中です', img: '' };
-      document.getElementById('step2').classList.add('hidden');
+      const result = results[key] || {
+        text: 'おすすめギフトを準備中です',
+        img: '',
+        link: '#',
+        desc: 'お探しの組み合わせに合うギフトを準備中です。しばらくお待ちください。'
+      };
+
       const resultDiv = document.getElementById('result');
-      resultDiv.innerHTML = `あなたにおすすめのギフトは「${result.text}」です！` +
-        (result.img ? `<img src="${result.img}" alt="${result.text}">` : '');
-      resultDiv.classList.remove('hidden');
+      resultDiv.innerHTML = `
+        <h2>あなたにおすすめのギフトは「${result.text}」です！</h2>
+        ${result.img ? `<img src="${result.img}" class="responsive" alt="${result.text}">` : ''}
+        <p>${result.desc}</p>
+        <a href="${result.link}" target="_blank">
+          <button>商品ページを見る</button>
+        </a>
+        <div class="share-buttons">
+          <a class="twitter" href="https://twitter.com/intent/tweet?text=私は「${result.text}」タイプ！&url=https://yamashita5594.github.io/test/" target="_blank">Twitterでシェア</a>
+          <a class="instagram" href="https://www.instagram.com/" target="_blank">Instagramで見る</a>
+        </div>
+        <button class="back-btn" onclick="showStep('step2')">戻る</button>
+      `;
+      showStep('result');
     }
   </script>
 </body>
 </html>
-
